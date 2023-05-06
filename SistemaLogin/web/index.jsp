@@ -4,11 +4,9 @@
     Author     : vilar
 --%>
 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
-<%@page import="java.sql.*"%>
-<%@page import="com.mysql.jdbc.Driver"%>
-<%@page import="config.Conexao"%>
+<%@ include file="referencias.jsp" %>
 
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
 <html>
@@ -18,8 +16,8 @@
     </head>
     <body>
         <%
-             Statement st = null;
-             ResultSet rs = null;
+            Statement st = null;
+            ResultSet rs = null;
         %>
         <div class="container mt-4 col-lg-4">
             <div class="card col-sm-8">
@@ -38,30 +36,28 @@
                             <label>Senha:</label>
                             <input type="password" name="txtpass" id="txtpass" value="" class="form-control">
                             <%
-                                    if ((request.getParameter("txtuser") !=null) && (request.getParameter("txtpass") !=null)) {
-                                        String login, pass;
-                                        login = request.getParameter("txtuser");
-                                        pass = request.getParameter("txtpass");
-                                        st = new Conexao().conectar().createStatement();
-                                        rs = st.executeQuery("select * from tblogin where usuario ='"+login+"' and senha='"+pass+"'");
-                                        if(rs.next()){
-                                            response.sendRedirect("principal.jsp");
-                                            session.setAttribute("usuario",login);
-                                            session.setAttribute("nivel",rs.getString(3));
-                                        }
-                                        else
-                                        {
-                                            out.println("<script>alert('Verifique o usuário ou senha')</script>");
-                                        }
+                                if ((request.getParameter("txtuser") != null) && (request.getParameter("txtpass") != null)) {
+                                    String login, pass;
+                                    login = request.getParameter("txtuser");
+                                    pass = request.getParameter("txtpass");
+                                    st = new Conexao().conectar().createStatement();
+                                    rs = st.executeQuery("select * from tblogin where usuario ='" + login + "' and senha='" + pass + "'");
+                                    if (rs.next()) {
+                                        response.sendRedirect("principal.jsp");
+                                        session.setAttribute("usuario", login);
+                                        session.setAttribute("nivel", rs.getString(3));
+                                    } else {
+                                        out.println("<script>alert('Verifique o usuário ou senha')</script>");
+                                    }
                                 }
-                                
-                           %>
+
+                            %>
                         </div>
                         <input type="submit" name="btnLog" value="Logar" id="btnLog" class="btn btn-primary btn-block">
                     </form>
                 </div>
             </div>
         </div>
-        
+
     </body>
 </html>
